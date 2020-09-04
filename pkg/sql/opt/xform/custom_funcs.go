@@ -2209,9 +2209,8 @@ func (c *CustomFuncs) GenerateZigzagJoins(
 			continue
 		}
 
-		iter2 := makeScanIndexIter(c.e.mem, scanPrivate, rejectPrimaryIndex|rejectInvertedIndexes|rejectPartialIndexes)
 		// Only look at indexes after this one.
-		iter2.StartAfter(iter.IndexOrdinal())
+		iter2 := iter.Clone()
 
 		for iter2.Next() {
 			rightFixed := c.indexConstrainedCols(iter2.Index(), scanPrivate.Table, fixedCols)
