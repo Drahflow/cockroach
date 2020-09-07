@@ -143,7 +143,7 @@
     "**/url-parse": "^1.4.3"
   },
   "engines": {
-    "node": ">=12",
+    "node": ">=10",
     "yarn": ">=1.7.0"
   },
   "browserslist": [
