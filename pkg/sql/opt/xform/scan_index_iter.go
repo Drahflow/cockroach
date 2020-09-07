@@ -85,7 +85,7 @@ func makeScanIndexIter(
 	mem *memo.Memo, scanPrivate *memo.ScanPrivate, rejectFlags indexRejectFlags,
 ) scanIndexIter {
 	tabMeta := mem.Metadata().TableMeta(scanPrivate.Table)
-	iterationOrder := rand.Perm(tabMeta.Table.IndexCount())
+	iterationOrder := append([]int{-1}, rand.Perm(tabMeta.Table.IndexCount())...)
 
 	return scanIndexIter{
 		mem:                mem,
@@ -109,10 +109,9 @@ func (it *scanIndexIter) Clone() scanIndexIter {
 	}
 }
 
-// Next advances iteration to the next index of the Scan operator's table. This
-// is the primary index if it's the first time next is called, or a secondary
-// index thereafter. When there are no more indexes to enumerate, next returns
-// false. The current index is accessible via the iterator's "index" field.
+// Next advances iteration to the next index of the Scan operator's table.
+// When there are no more indexes to enumerate, next returns false. The
+// current index is accessible via the iterator's "index" field.
 //
 // The rejectFlags set in makeScanIndexIter determine which indexes to skip when
 // iterating, if any.
